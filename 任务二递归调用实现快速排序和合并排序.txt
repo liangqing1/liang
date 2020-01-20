@@ -1,0 +1,140 @@
+递归实现合并排序
+#include<iostream>
+#include<string>
+#include<fstream>
+#define max 2000
+using namespace std;
+ 
+typedef struct Basestation
+{
+int ENODEBID;
+float LONGITUDE;//经度 
+float LATITUDE;//纬度 
+float K_DIST ;
+ }Basestation;
+ 
+Basestation a[max], b[max];
+ 
+void MergeSort(int left, int right);
+void Merge(int left, int mid, int right);
+ 
+int main()
+{
+int i = 1;
+int num = 0;
+ifstream file;
+file.open("Data_Of_Basestation.txt", ios::in);
+if(file.bad())
+{
+cout<<"打开文件时发生错误"<<endl;
+return 0;
+}
+while(!file.eof())
+{
+file>>a[i].ENODEBID>>a[i].LONGITUDE>>a[i].LATITUDE>>a[i].K_DIST;
+i++;
+num++;
+//cout<<a[i].ENODEBID<<" "<<a[i].LONGITUDE<<" "<<a[i].LATITUDE<<" "<<a[i].K_DIST<<endl;
+file.get();
+if(file.peek()==EOF)
+break;
+}
+MergeSort(1, num);
+cout<<"排序结果："<<endl;
+cout<<" 基站编号 "<<"\t"<<" 基站经度 "<<"\t"<<" 基站纬度 "<<"\t"<<" K_DIST "<<endl; 
+for(int j=1; j<=num; j++)
+{
+cout<<a[j].ENODEBID<<"\t"<<a[j].LONGITUDE<<"\t"<<a[j].LATITUDE<<"\t"<<a[j].K_DIST<<endl;
+}
+file.close();
+return 0;
+ } 
+ 
+void MergeSort(int left, int right)
+{
+if(left<right)
+{
+int mid;
+mid = (left + right) / 2;
+MergeSort(left, mid);//左半部排序
+MergeSort(mid+1, right);//右半部排序
+Merge(left, mid, right);//左右合并排序 
+}
+ } 
+ 
+void Merge(int left, int mid, int right)//两个子段序列的合并操作 
+{
+int i = left;
+int j = mid+1;
+int k = left;
+while(i<=mid && j<=right)
+{
+if(a[i].K_DIST<=a[j].K_DIST)
+b[k++] = a[i++];
+else
+b[k++] = a[j++];
+}
+if(i>mid)
+{
+for(int q=j; q<=right; q++)
+b[k++] = a[q];
+}
+else
+{
+for(int q=i; q<=mid; q++)
+b[k++] = a[q];
+}
+for(int h=left; h<=right; h++)//将左右合并在b中排序完成的序列复制到a数组 
+{ 
+a[h] = b[h];
+}
+}
+
+
+
+
+递归实现快速排序
+#include <stdio.h>
+int qusort(int s[],int start,int end)    //自定义函数 qusort()
+{
+    int i,j;    //定义变量为基本整型
+    i=start;    //将每组首个元素赋给i
+    j = end;    //将每组末尾元素赋给j
+    s[0]=s[start];    //设置基准值
+    while(i<j)
+    {
+        while(i<j&&s[0]<s[j])
+        j--;    //位置左移
+        if(i<j)
+        {
+            s[i]=s[j];    //将s[j]放到s[i]的位置上
+            i++;    //位置右移
+        }
+        while(i<j&&s[i]<=s[0])
+            i++;    //位置左移
+        if(i<j)
+        {
+            s[j]=s[i];    //将大于基准值的s[j]放到s[i]位置
+            j--;    //位置左移
+        }
+    }
+    s[i]=s[0];    //将基准值放入指定位置
+    if (start<i)
+        qusort(s,start,j-1);    //对分割出的部分递归调用qusort()函数
+    if (i<end)
+        qusort(s,j+1,end);
+    return 0;
+}
+int main()
+{
+    int a[11], i;    //定义数组及变量为基本整型
+    printf("请输入10个数：\n");
+    for(i=1;i<=10;i++)
+        scanf("%d",&a[i]);    //从键盘中输入10个要进行排序的数
+    qusort(a,1,10);    //调用qusort()函数进行排序
+    printf("排序后的顺序是：\n");
+    for(i=1;i<=10;i++)
+        printf("%5d",a[i]);    //输出排好序的数组
+    printf("\n");
+    return 0;
+}
