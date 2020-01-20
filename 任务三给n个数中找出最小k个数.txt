@@ -1,0 +1,35 @@
+#include <stdio.h>
+main(){
+    int n,k;
+    printf("please input the values of n and k:\n");
+    scanf("%d%d",&n,&k);  //输入n和k;
+    int a[10];            //定义一个长度为10的数组a；
+    int i=0,j,temp;
+    int m=n;              //定义m然后把n的值赋给m；
+    while(m>0)            //如果m>0进入下面循环，输入数字到数组，执行一次m自减1，i自增，直到m<=0;跳出循环；这个循环的意思就是输入n个数到数组
+    {
+        printf("input an int:\n");
+        scanf("%d",&a[i]);    
+        m--;
+        i++;
+  }
+//下面用两个for循环比较大小，然后对数组a里刚才输入的数从小到大重新进行排序；
+    for(i=0;i<n-1;i++)
+    {
+        for(j=0;j<n-i-1;j++)
+        {
+            if(a[j]>a[j+1]) //判断a[j]和a[j+i]的大小，如果a[j]>a[j+1],就把a[j]的值赋给变量temp，在把a[j+1]的值赋给a[j];temp赋给a[j+1],然后循环比较从小到大进行排序，
+            {
+            temp=a[j];
+            a[j]=a[j+1];
+            a[j+1]=temp;
+            }
+        }
+}
+    for(i=0;i<k;i++) //这个for循环的意思就是从上面排好的数中，选出前面的k个数，并打印出来；
+    {
+        printf("%d ",a[i]);
+    }
+printf("\n");
+
+}
